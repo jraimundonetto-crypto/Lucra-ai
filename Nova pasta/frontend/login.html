@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Lucra AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0b0f14;
+            --bg-secondary: #0f1c2e;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.08);
+            --primary: #FFD600;
+            --green: #00FF88;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background: radial-gradient(circle at 20% 20%, var(--bg-secondary), var(--bg-dark) 60%);
+            color: white;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .login-container {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            padding: 25px; /* Reduzido */
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 340px; /* Reduzido para ficar mais 'slim' */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 24px; /* Reduzido */
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .logo span {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .subtitle {
+            font-size: 11px; /* Bem pequeno e elegante */
+            opacity: 0.5;
+            margin-bottom: 20px;
+        }
+
+        .trial-badge {
+            background: rgba(0, 255, 136, 0.08);
+            color: var(--green);
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 9px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            letter-spacing: 0.5px;
+        }
+
+        .form-group { text-align: left; margin-bottom: 15px; }
+
+        label {
+            display: block;
+            font-size: 11px;
+            margin-bottom: 6px;
+            opacity: 0.7;
+            padding-left: 4px;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px 14px; /* Mais baixo */
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(0,0,0,0.3);
+            color: white;
+            font-size: 13px;
+            transition: 0.3s;
+            outline: none;
+        }
+
+        input:focus { border-color: var(--primary); }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: var(--primary);
+            color: black;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 5px;
+        }
+
+        .btn-primary:hover { transform: scale(1.02); }
+
+        .btn-secondary {
+            background: none;
+            border: none;
+            color: var(--green);
+            font-size: 11px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            font-size: 10px;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="logo">Lucra <span>AI</span></div>
+        <p class="subtitle">Sócio Estratégico de Bolso</p>
+        
+        <span class="trial-badge">TESTE GRÁTIS: 3 DIAS</span>
+
+        <form id="authForm">
+            <div class="form-group">
+                <label>E-mail</label>
+                <input type="email" id="email" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>Senha</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-primary" id="btnAcao">Entrar no Negócio</button>
+            <button type="button" class="btn-secondary" id="btnAlternar">Criar nova conta</button>
+        </form>
+
+        <p class="footer-text">LUCRA AI &copy; 2026</p>
+    </div>
+
+    <script>
+        const btnAcao = document.getElementById('btnAcao');
+        const btnAlternar = document.getElementById('btnAlternar');
+        let modoLogin = true;
+
+        btnAlternar.addEventListener('click', () => {
+            modoLogin = !modoLogin;
+            btnAcao.innerText = modoLogin ? 'Entrar no Negócio' : 'Começar Agora';
+            btnAlternar.innerText = modoLogin ? 'Criar nova conta' : 'Já sou cadastrado';
+        });
+
+        document.getElementById('authForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert("Iniciando conexão segura...");
+            // Próximo passo: Integrar com auth.js
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="auth.js"></script>
+
+<script>
+    // Conecta o formulário com a função do auth.js
+    const authForm = document.getElementById('authForm');
+    authForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        
+        // Chama a função que criamos no auth.js
+        // 'modoLogin' é a variável que já tínhamos no script do login.html
+        await autenticar(email, password, modoLogin);
+    });
+</script>
+
+</body>
+</html>
